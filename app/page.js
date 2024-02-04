@@ -74,8 +74,9 @@ export default function Home() {
         console.log(longitude);
         setLatitude(position.coords.latitude);
         setLongitude(position.coords.longitude);
-
+            console.log(path)
         if (latitude && longitude && path) {
+          console.log(path)
           const distance=getDistance(
               { latitude: latitude, longitude: longitude },
               {
