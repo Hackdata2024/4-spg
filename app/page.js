@@ -153,8 +153,8 @@ export default function Home() {
                 latitude: latitude,
                 longitude: longitude,
               }, {
-                latitude: nextWaypoint.latitude,
-                longitude: nextWaypoint.latitude,
+                latitude: path[0].latitude,
+                longitude: path[0].latitude,
               })}
               testOffset={0}
             />
