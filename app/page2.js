@@ -141,7 +141,7 @@ export default function Home() {
       <p>Current Coords - {latitude}, {longitude}</p>
       <p>{reachedDestination ? "Reached" : "Not Reached"}</p>
       {latitude && longitude && (<SelectDestination setDestination={changeDestination}/>)}
-      {isLoading && <p>Loading Path...</p>}
+      {isLoading && <p>Loading Path..ses.</p>}
       {!isLoading && !error && (
         <>
           <div className="diagnostics">

@@ -37,14 +37,14 @@ export default function SelectDestination({ setDestination }) {
       {error && <p>Error fetching destinations: {error.message}</p>}
       {!isLoading && !error && (
         <div className="flex flex-col justify-center items-center">
-          <select id="select-destination">
+          <select id="select-destination" className="rounded w-unit-4xl h-unit-l text-black text-center">
             {destinations.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
           </select>
-          <button id="submit-destination">Navigate</button>
+          <button id="submit-destination" className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded m-5">Navigate</button>
         </div>
       )}
     </div>
