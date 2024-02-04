@@ -3,16 +3,12 @@ import arrowDarkSvg from "@/public/arrow-dark.svg"
 
 export default function Compass({northReset, waypointHeading, testOffset}) {
   return (
-    <div className="compass">
+    <div className="compass mt-6 mb-6 flex justify-center items-center">
       <Image
+        width={150}
         src={arrowDarkSvg}
         style={{transform: `rotate(${northReset + waypointHeading + testOffset}deg)`}}
       />
-      <p>waypointHeading - {waypointHeading}</p>
-      <p>testOffset - {testOffset}</p>
-      <p>1+2 - {(waypointHeading + testOffset)}</p>
-      <p>Resultant - {northReset + waypointHeading + testOffset}</p>
-      <hr/>
     </div>   
   )
 }
