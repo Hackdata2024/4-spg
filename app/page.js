@@ -56,10 +56,8 @@ export default function Home() {
         }
 
         const data = await response.json()
-        const dataCpy = data.map(x => x);
-        setNextWaypoint(dataCpy[0]);
-        setPath(dataCpy);
-
+        setPath(data);
+        setNextWaypoint(data[0]);
       } catch (error) {
         setError(error);
       } finally {
@@ -81,18 +79,15 @@ export default function Home() {
           setDistance(getDistance(
             { latitude: latitude, longitude: longitude },
             {
-              latitude: path[0].latitude,
-              longitude: path[0].longitude,
+              latitude: nextWaypoint.latitude,
+              longitude: nextWaypoint.longitude,
             }
           ));
 
-          if (distance <= 8) {
+          if (distance <= 5) {
             if (path.length > 1) {
-
-              const pathCpy = path.map(x => x);
-              setNextWaypoint(pathCpy[0]);
-              setPath(pathCpy.slice(1));
-
+              setPath(path.slice(1));
+              setNextWaypoint(path[0]);
             } else {
               setReachedDestination(true);
               setNextWaypoint(null);
@@ -102,7 +97,7 @@ export default function Home() {
         }
       },
         (error) => alert(JSON.stringify(error)),
-        { enableHighAccuracy: true, distanceFilter: 1}
+        { enableHighAccuracy: true, distanceFilter: 1, maximumAge: 1000 }
       );
 
       // Cleanup code
@@ -116,21 +111,14 @@ export default function Home() {
   }, [latitude, longitude, path]);
 
   useEffect(() => {
-    if (nextWaypoint) {
-      const greatCircleBearing = getGreatCircleBearing({
-        latitude: latitude,
-        longitude: longitude,
-      }, {
-        latitude: path[0].latitude,
-        longitude: path[0].latitude,
-      });
-      setGreatCircleBearing(greatCircleBearing);
-      console.log(`n- ${nextWaypoint}`)
-      console.log(`gcb- ${greatCircleBearing}`)
-    } else {
-      setGreatCircleBearing(0);
-    }
-  }, [latitude, longitude, nextWaypoint, path])
+    const greatCircleBearing = getGreatCircleBearing({
+      latitude: latitude,
+      longitude: longitude,
+    }, {
+      latitude: nextWaypoint.latitude,
+      longitude: nextWaypoint.latitude,
+    });
+  }, [latitude, longitude, nextWaypoint])
 
   return (
     <div className="app min-h-screen flex flex-col justify-center items-center">
@@ -143,15 +131,14 @@ export default function Home() {
           <div className="diagnostics">
             Waypoints List- 
             {path.map((element, index) => (
-                <p>{index} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
+                <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
             ))}
-
-            <p>Next Waypoint - {path[0].latitude} | {path[0].longitude} | {path[0].wp_id}</p>
+            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
             <p>Distance - {distance}</p>
-            <p>Angle to next waypoint - {greatCircleBearing}</p>
-            <p>180+Angle to next waypoint - {180+greatCircleBearing}</p>
+            <p>Angle to next waypoint - {nextWaypointHeading}</p>
+            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
             <p>alpha - {(orientation && orientation.alpha)}</p>
-            <p>north - {Math.round(((orientation && orientation.alpha)??360) - 360)}</p>
+            <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
           </div>
           <div className="compi">
             <Compass
