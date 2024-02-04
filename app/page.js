@@ -151,7 +151,7 @@ export default function Home() {
             <p>Angle to next waypoint - {greatCircleBearing}</p>
             <p>180+Angle to next waypoint - {180+greatCircleBearing}</p>
             <p>alpha - {(orientation && orientation.alpha)}</p>
-            <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
+            <p>north - {Math.round(((orientation && orientation.alpha)??360) - 360)}</p>
           </div>
           <div className="compi">
             <Compass
