@@ -119,6 +119,7 @@ export default function Home() {
         latitude: nextWaypoint.latitude,
         longitude: nextWaypoint.latitude,
       });
+      setGreatCircleBearing(greatCircleBearing);
     }
   }, [latitude, longitude, nextWaypoint, path])
 
