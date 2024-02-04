@@ -102,7 +102,7 @@ export default function Home() {
         }
       },
         (error) => alert(JSON.stringify(error)),
-        { enableHighAccuracy: true, distanceFilter: 1, maximumAge: 2000}
+        { enableHighAccuracy: true, distanceFilter: 1}
       );
 
       // Cleanup code
