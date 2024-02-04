@@ -121,10 +121,14 @@ export default function Home() {
         latitude: latitude,
         longitude: longitude,
       }, {
-        latitude: nextWaypoint.latitude,
-        longitude: nextWaypoint.latitude,
+        latitude: path[0].latitude,
+        longitude: path[0].latitude,
       });
       setGreatCircleBearing(greatCircleBearing);
+      console.log(`n- ${nextWaypoint}`)
+      console.log(`gcb- ${greatCircleBearing}`)
+    } else {
+      setGreatCircleBearing(0);
     }
   }, [latitude, longitude, nextWaypoint, path])
 
@@ -141,10 +145,11 @@ export default function Home() {
             {path.map((element, index) => (
                 <p>{index} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
             ))}
-            <p>Next Waypoint - {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+
+            <p>Next Waypoint - {path[0].latitude} | {path[0].longitude} | {path[0].wp_id}</p>
             <p>Distance - {distance}</p>
-            <p>Angle to next waypoint - {nextWaypointHeading}</p>
-            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
+            <p>Angle to next waypoint - {greatCircleBearing}</p>
+            <p>180+Angle to next waypoint - {180+greatCircleBearing}</p>
             <p>alpha - {(orientation && orientation.alpha)}</p>
             <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
           </div>
