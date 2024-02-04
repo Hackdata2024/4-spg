@@ -102,7 +102,7 @@ export default function Home() {
         }
       },
         (error) => alert(JSON.stringify(error)),
-        { enableHighAccuracy: true, distanceFilter: 1}
+        { enableHighAccuracy: true, distanceFilter: 1, maximumAge: 2000}
       );
 
       // Cleanup code
@@ -139,9 +139,9 @@ export default function Home() {
           <div className="diagnostics">
             Waypoints List- 
             {path.map((element, index) => (
-                <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
+                <p>{index} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
             ))}
-            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+            <p>Next Waypoint - {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
             <p>Distance - {distance}</p>
             <p>Angle to next waypoint - {nextWaypointHeading}</p>
             <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
