@@ -81,8 +81,8 @@ export default function Home() {
           setDistance(getDistance(
             { latitude: latitude, longitude: longitude },
             {
-              latitude: nextWaypoint.latitude,
-              longitude: nextWaypoint.longitude,
+              latitude: path[0].latitude,
+              longitude: path[0].longitude,
             }
           ));
 
