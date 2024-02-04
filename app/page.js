@@ -111,13 +111,15 @@ export default function Home() {
   }, [latitude, longitude, path]);
 
   useEffect(() => {
-    const greatCircleBearing = getGreatCircleBearing({
-      latitude: latitude,
-      longitude: longitude,
-    }, {
-      latitude: nextWaypoint.latitude,
-      longitude: nextWaypoint.latitude,
-    });
+    if (nextWaypoint) {
+      const greatCircleBearing = getGreatCircleBearing({
+        latitude: latitude,
+        longitude: longitude,
+      }, {
+        latitude: nextWaypoint.latitude,
+        longitude: nextWaypoint.latitude,
+      });
+    }
   }, [latitude, longitude, nextWaypoint, path])
 
   return (
