@@ -9,7 +9,6 @@ import {getDistance, getRhumbLineBearing, getGreatCircleBearing, isPointWithinRa
 
 import arrowDarkSvg from "../public/arrow-dark.svg";
 import Compass from "@/components/Compass/Compass";
-import { Card, CardBody, Spinner } from "@nextui-org/react";
 
 export default function Home() {
   const [destination, setDestination] = useState(null);
@@ -26,11 +25,10 @@ export default function Home() {
   const [reachedDestination, setReachedDestination] = useState(false);
   const [hasFetchedPathData, setHasFetchedPathData] = useState(false);
   const [inWaypoint, setInWaypoint] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
+  
   const changeDestination = (destination) => {
     if (!compassToggled) {
-      // requestAccess();
+      requestAccess();
       setCompassToggled(true); 
     }
     setDestination(destination);
@@ -59,18 +57,16 @@ export default function Home() {
         }
 
         const data = await response.json()
-        console.log("hello");
-        console.log(data);
         setPath(data);
         setNextWaypoint(data[0]);
         setHasFetchedPathData(true);
       } catch (error) {
-        console.log("error")
         setError(error);
       } finally {
         setIsLoading(false);
       }
     })();
+
   }
 
   useEffect(() => {
@@ -140,77 +136,38 @@ export default function Home() {
     }
   }, [latitude, longitude, nextWaypoint])
 
-  useEffect(() => {
-    const mobileMediaQuery = window.matchMedia('(max-width: 767px)'); // Adjust the breakpoint as needed
-
-    const handleMobileChange = (event) => {
-      setIsMobile(event.matches);
-    };
-
-    mobileMediaQuery.addEventListener('change', handleMobileChange);
-    setIsMobile(mobileMediaQuery.matches);
-
-    return () => {
-      mobileMediaQuery.removeEventListener('change', handleMobileChange);
-    };
-  }, [])
-
   return (
-    <div className="app h-screen flex flex-col justify-center items-center">
-      {!isMobile ? (
-        <div>
-          <Card>
-            <CardBody className="flex flex-col p-10">
-              <div className="flex flex-col justify-center items-center">
-                <Spinner color="secondary" labelColor="secondary" size="lg" className="mt-2"/>
-                <p className="text-2xl mt-8">Please use on a mobile device.</p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      ) : !(latitude && longitude) ? (
-        <div>
-          <Card>
-            <CardBody className="flex flex-col p-10">
-              <div className="flex flex-col justify-center items-center">
-                <Spinner color="secondary" labelColor="secondary" size="lg" className="mt-2"/>
-                <p className="text-2xl mt-8">fetching your location</p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      ) : ( isLoading ? (
-        <div className="flex flex-col justify-center items-center">
-          <Card>
-            <CardBody className="flex flex-col p-10">
-              <div className="flex flex-col justify-center items-center">
-                <Spinner color="secondary" labelColor="secondary" size="lg" className="mt-2"/>
-                <p className="text-2xl mt-8">fetching shortest path</p>
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-        ) : (
-          <div className="full-paint">
-            <div className="flex justify-center">
-              <h1 className="text-5xl pb-6">mesh.nav</h1>
-            </div>
-            <SelectDestination setDestination={changeDestination}/>
-            <div className="navigator flex flex-col justify-center items-center">
-              <Card>
-                <CardBody className="flex flex-col justify-center items-center w-unit-7xl h-unit-8xl">
-                  <Compass
-                    northReset={((orientation && orientation.alpha)??360) - 360}
-                    waypointHeading={nextWaypointHeading}
-                    testOffset={0}
-                    />
-                <p className="text-4xl">{(distance===0)?"-":`${distance??0} m`}</p>
-                </CardBody>
-
-              </Card>
-            </div>
+    <div className="app min-h-screen flex flex-col justify-center items-center">
+      <p>Current Coords - {latitude}, {longitude}</p>
+      <p>{reachedDestination ? "Reached" : "Not Reached"}</p>
+      {latitude && longitude && (<SelectDestination setDestination={changeDestination}/>)}
+      {isLoading && <p>Loading Path...</p>}
+      {!isLoading && !error && (
+        <>
+          <div className="diagnostics">
+            Waypoints List- 
+            {path.map((element, index) => (
+                <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
+            ))}
+            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+            <p>Distance - {distance}</p>
+            <p>Angle to next waypoint - {nextWaypointHeading}</p>
+            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
+            <p>alpha - {(orientation && orientation.alpha)}</p>
+            <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
           </div>
-        ))}
+          <div className="compi pt-10">
+            <Compass
+              northReset={((orientation && orientation.alpha)??360) - 360}
+              waypointHeading={nextWaypointHeading}
+              testOffset={0}
+            />
+          </div>
+        </>
+      )}
+      {/* {!isLoading && !error && compass1}
+      {!isLoading && !error && compass2} */}
+
     </div>
   )
 
