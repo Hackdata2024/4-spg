@@ -76,13 +76,14 @@ export default function Home() {
         setLongitude(position.coords.longitude);
 
         if (latitude && longitude && path) {
-          setDistance(getDistance(
-            { latitude: latitude, longitude: longitude },
-            {
-              latitude: nextWaypoint.latitude,
-              longitude: nextWaypoint.longitude,
-            }
-          ));
+          const distance=getDistance(
+              { latitude: latitude, longitude: longitude },
+              {
+                latitude: path[0].latitude,
+                longitude: path[0].longitude,
+                }
+              )
+              setDistance(distance);
 
           if (distance <= 5) {
             if (path.length > 1) {
@@ -97,7 +98,7 @@ export default function Home() {
         }
       },
         (error) => alert(JSON.stringify(error)),
-        { enableHighAccuracy: true, distanceFilter: 1, maximumAge: 1000 }
+        { enableHighAccuracy: true, distanceFilter: 1 }
       );
 
       // Cleanup code
@@ -115,8 +116,8 @@ export default function Home() {
       latitude: latitude,
       longitude: longitude,
     }, {
-      latitude: nextWaypoint.latitude,
-      longitude: nextWaypoint.latitude,
+      latitude: path[0].latitude,
+      longitude: path[0].latitude,
     });
   }, [latitude, longitude, nextWaypoint])
 
@@ -131,12 +132,12 @@ export default function Home() {
           <div className="diagnostics">
             Waypoints List- 
             {path.map((element, index) => (
-                <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
+                <p>{index}  | {element.latitude} | {element.longitude} | {element.wp_id}</p>
             ))}
-            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+            <p>Next Waypoint - {path[0].latitude} | {path[0].longitude} | {path[0].wp_id}</p>
             <p>Distance - {distance}</p>
-            <p>Angle to next waypoint - {nextWaypointHeading}</p>
-            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
+            <p>Angle to next waypoint - {greatCircleBearing}</p>
+            <p>180+Angle to next waypoint - {180+greatCircleBearing}</p>
             <p>alpha - {(orientation && orientation.alpha)}</p>
             <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
           </div>
