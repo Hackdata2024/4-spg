@@ -138,42 +138,34 @@ export default function Home() {
 
   return (
     <div className="app min-h-screen flex flex-col justify-center items-center">
-      <p>Current Coords - {latitude}, {longitude}</p>
-      <p>{reachedDestination ? "Reached" : "Not Reached"}</p>
+      {/* <p>Current Coords - {latitude}, {longitude}</p> */}
+      {reachedDestination ? (
+        <div>
+          <h1 className="text-6xl">Reached Destination</h1>
+        </div>
+      ) : (
+        <></>
+      )}
       {latitude && longitude && (<SelectDestination setDestination={changeDestination}/>)}
       {isLoading && <p>Loading Path...</p>}
       {!isLoading && !error && (
         <>
           <div className="diagnostics">
-            Waypoints List- 
-            {path.map((element, index) => (
+            {/* {path.map((element, index) => (
                 <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
-            ))}
-            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+            ))} */}
+            {/* <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p> */}
             <p>Distance - {distance}</p>
-            <p>Angle to next waypoint - {nextWaypointHeading}</p>
-            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
-            <p>alpha - {(orientation && orientation.alpha)}</p>
-            <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
+            {/* <p>Angle to next waypoint - {nextWaypointHeading}</p> */}
+            {/* <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p> */}
+            {/* <p>alpha - {(orientation && orientation.alpha)}</p> */}
+            {/* <p>north - {((orientation && orientation.alpha)??360) - 360}</p> */}
           </div>
-          <div className="compi">
+          <div className="compi pt-10">
             <Compass
               northReset={((orientation && orientation.alpha)??360) - 360}
               waypointHeading={nextWaypointHeading}
               testOffset={0}
-            />
-          </div>
-          <div className="compi">
-            <Compass
-                northReset={((orientation && orientation.alpha)??360) - 360}
-                waypointHeading={getGreatCircleBearing({
-                  latitude: latitude,
-                  longitude: longitude,
-                }, {
-                  latitude: path[4].latitude,
-                  longitude: path[4].longitude,
-                })}
-                testOffset={0}
             />
           </div>
         </>

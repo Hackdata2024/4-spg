@@ -149,12 +149,12 @@ export default function Home() {
             {path.map((element, index) => (
                 <p>{index} | {element.name} | {element.latitude} | {element.longitude} | {element.wp_id}</p>
             ))}
-            <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p>
+            {/* <p>Next Waypoint - {nextWaypoint.name} | {nextWaypoint.latitude} | {nextWaypoint.longitude} | {nextWaypoint.wp_id}</p> */}
             <p>Distance - {distance}</p>
-            <p>Angle to next waypoint - {nextWaypointHeading}</p>
-            <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p>
-            <p>alpha - {(orientation && orientation.alpha)}</p>
-            <p>north - {((orientation && orientation.alpha)??360) - 360}</p>
+            {/* <p>Angle to next waypoint - {nextWaypointHeading}</p> */}
+            {/* <p>180+Angle to next waypoint - {180+nextWaypointHeading}</p> */}
+            {/* <p>alpha - {(orientation && orientation.alpha)}</p> */}
+            {/* <p>north - {((orientation && orientation.alpha)??360) - 360}</p> */}
           </div>
           <div className="compi pt-10">
             <Compass

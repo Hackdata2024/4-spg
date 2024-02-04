@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, CardBody, Spinner, Select, SelectSection, SelectItem, Button } from "@nextui-org/react";
 
 export default function SelectDestination({ setDestination }) {
   const [destinations, setDestinations] = useState([]);
@@ -12,8 +11,6 @@ export default function SelectDestination({ setDestination }) {
       try {
         const response = await axios.get("https://meshnav.azurewebsites.net/nav/");
         setDestinations(response.data);
-        console.log(response.data);
-        console.log(destinations);
       } catch (error) {
         setError(error);
       } finally {
@@ -26,8 +23,6 @@ export default function SelectDestination({ setDestination }) {
     if (!isLoading && !error) {
       const handleClick = () => {
         const selectedDestination = document.getElementById("select-destination").value;
-
-        console.log(selectedDestination)
         setDestination(destinations.find(element => element.id==selectedDestination));
       };
 
@@ -38,21 +33,20 @@ export default function SelectDestination({ setDestination }) {
 
   return (
     <div>
-        {isLoading && <p>Loading destinations...</p>}
-        {error && <p>Error fetching destinations: {error.message}</p>}
-        {!isLoading && !error && (
-          <div className="flex flex-col justify-center items-center">
-            <select id="select-destination">
-              {destinations.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-            <button id="submit-destination">Navigate</button>
-          </div>
-        )}
-      </div>
+      {isLoading && <p>Loading destinations...</p>}
+      {error && <p>Error fetching destinations: {error.message}</p>}
+      {!isLoading && !error && (
+        <div className="flex flex-col justify-center items-center">
+          <select id="select-destination">
+            {destinations.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+          <button id="submit-destination">Navigate</button>
+        </div>
+      )}
+    </div>
   );
 }
-
