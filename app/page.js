@@ -23,6 +23,7 @@ export default function Home() {
   const [compassToggled, setCompassToggled] = useState(false);
   const [orientation, requestAccess, revokeAccess, orientationError] = useDeviceOrientation();
   const [reachedDestination, setReachedDestination] = useState(false);
+  const [greatCircleBearing, setGreatCircleBearing] = useState(0);
   
   const changeDestination = (destination) => {
     if (!compassToggled) {
@@ -84,7 +85,7 @@ export default function Home() {
           ));
 
           if (distance <= 5) {
-            if (path.length > 0) {
+            if (path.length > 1) {
               setPath(path.slice(1));
               setNextWaypoint(path[0]);
             } else {
@@ -96,7 +97,7 @@ export default function Home() {
         }
       },
         (error) => alert(JSON.stringify(error)),
-        { enableHighAccuracy: true, distanceFilter: 1 }
+        { enableHighAccuracy: true, distanceFilter: 1, maximumAge: 1000 }
       );
 
       // Cleanup code
@@ -108,6 +109,16 @@ export default function Home() {
       setError(error);
     }
   }, [latitude, longitude, path]);
+
+  useEffect(() => {
+    const greatCircleBearing = getGreatCircleBearing({
+      latitude: latitude,
+      longitude: longitude,
+    }, {
+      latitude: nextWaypoint.latitude,
+      longitude: nextWaypoint.latitude,
+    });
+  }, [nextWaypoint])
 
   return (
     <div className="app min-h-screen flex flex-col justify-center items-center">
@@ -132,13 +143,7 @@ export default function Home() {
           <div className="compi">
             <Compass
               northReset={((orientation && orientation.alpha)??360) - 360}
-              waypointHeading={getGreatCircleBearing({
-                latitude: latitude,
-                longitude: longitude,
-              }, {
-                latitude: nextWaypoint.latitude,
-                longitude: nextWaypoint.latitude,
-              })}
+              waypointHeading={greatCircleBearing}
               testOffset={0}
             />
           </div>
