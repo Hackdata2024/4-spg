@@ -18,7 +18,7 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [distance, setDistance] = useState(null);
   const [nextWaypoint, setNextWaypoint] = useState(null);
-  const [nextWaypointHeading, setNextWaypointHeading] = useState(null);
+  const [nextWaypointHeading, setNextWaypointHeading] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [compassToggled, setCompassToggled] = useState(false);
   const [orientation, requestAccess, revokeAccess, orientationError] = useDeviceOrientation();
@@ -126,6 +126,16 @@ export default function Home() {
     }
   }, [latitude, longitude, path]);
 
+  useEffect(() => {
+    if (nextWaypoint) {
+      const heading = getRhumbLineBearing(
+          {latitude: latitude, longitude: longitude},
+          {latitude: nextWaypoint.latitude, longitude: nextWaypoint.longitude}
+      );
+      setNextWaypointHeading(heading);
+    }
+  }, [latitude, longitude, nextWaypoint])
+
   return (
     <div className="app min-h-screen flex flex-col justify-center items-center">
       <p>Current Coords - {latitude}, {longitude}</p>
@@ -149,13 +159,7 @@ export default function Home() {
           <div className="compi">
             <Compass
               northReset={((orientation && orientation.alpha)??360) - 360}
-              waypointHeading={getGreatCircleBearing({
-                latitude: latitude,
-                longitude: longitude,
-              }, {
-                latitude: nextWaypoint.latitude,
-                longitude: nextWaypoint.latitude,
-              })}
+              waypointHeading={nextWaypointHeading}
               testOffset={0}
             />
           </div>
