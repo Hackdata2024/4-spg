@@ -118,7 +118,7 @@ export default function Home() {
       latitude: nextWaypoint.latitude,
       longitude: nextWaypoint.latitude,
     });
-  }, [latitude, longitude, nextWaypoint])
+  }, [latitude, longitude, nextWaypoint, path])
 
   return (
     <div className="app min-h-screen flex flex-col justify-center items-center">
