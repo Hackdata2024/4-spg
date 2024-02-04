@@ -56,8 +56,10 @@ export default function Home() {
         }
 
         const data = await response.json()
-        setPath(data);
-        setNextWaypoint(data[0]);
+        const dataCpy = data.map(x => x);
+        setNextWaypoint(dataCpy[0]);
+        setPath(dataCpy);
+
       } catch (error) {
         setError(error);
       } finally {
@@ -84,10 +86,13 @@ export default function Home() {
             }
           ));
 
-          if (distance <= 5) {
+          if (distance <= 8) {
             if (path.length > 1) {
-              setPath(path.slice(1));
-              setNextWaypoint(path[0]);
+
+              const pathCpy = path.map(x => x);
+              setNextWaypoint(pathCpy[0]);
+              setPath(pathCpy.slice(1));
+
             } else {
               setReachedDestination(true);
               setNextWaypoint(null);
