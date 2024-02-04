@@ -166,8 +166,8 @@ export default function Home() {
                   latitude: latitude,
                   longitude: longitude,
                 }, {
-                  latitude: 28.5237699,
-                  longitude: 77.5747705,
+                  latitude: path[4],
+                  longitude: path[4],
                 })}
                 testOffset={0}
             />
