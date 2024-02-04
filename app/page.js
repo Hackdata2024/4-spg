@@ -163,19 +163,6 @@ export default function Home() {
               testOffset={0}
             />
           </div>
-          <div className="compi">
-            <Compass
-                northReset={((orientation && orientation.alpha)??360) - 360}
-                waypointHeading={getGreatCircleBearing({
-                  latitude: latitude,
-                  longitude: longitude,
-                }, {
-                  latitude: path[4].latitude,
-                  longitude: path[4].longitude,
-                })}
-                testOffset={0}
-            />
-          </div>
         </>
       )}
       {/* {!isLoading && !error && compass1}
